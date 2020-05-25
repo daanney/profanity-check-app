@@ -7,6 +7,9 @@ phases:
   build:
     commands:
       - mvn package
+  post_build:
+    commands:
+      - cp ./target/profanity-check-1.0.0.jar profanity-check.jar
 artifacts:
   paths:
-    - './target/profanity-check-1.0.0.jar'
+    - 'profanity-check.jar'
