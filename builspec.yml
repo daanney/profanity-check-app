@@ -1,0 +1,12 @@
+version: 0.2
+
+phases:
+  install:
+    runtime-versions:
+      java: corretto8
+  build:
+    commands:
+      - mvn package
+artifacts:
+  paths:
+    - './target/profanity-check-1.0.0.jar'
