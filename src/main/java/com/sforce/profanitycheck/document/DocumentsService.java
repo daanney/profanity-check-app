@@ -17,17 +17,19 @@ import java.util.LinkedList;
 import java.util.List;
 
 @Service
-
 public class DocumentsService {
 
     @Value("${profanitycheck.upload.dir}")
     private String uploadDirectory;
 
     @Autowired
-    BannedWordsRepository bannedWordsRepository;
+    private BannedWordsRepository bannedWordsRepository;
 
     @Autowired
-    DocumentsRepository documentsRepository;
+    private DocumentsRepository documentsRepository;
+
+    @Autowired
+    private Validations validations;
 
     public Iterable<Document> getDocuments() {
         return documentsRepository.findAll();
@@ -48,7 +50,7 @@ public class DocumentsService {
         List<BannedWord> bannedWords = new LinkedList<>();
         for(BannedWord bannedWord : bannedWordsRepository.findAll()) bannedWords.add(bannedWord);
 
-        if(!Validations.validatesAll(file, result, bannedWords))
+        if(!validations.validatesAll(file, result, bannedWords))
             return false;
 
         try {

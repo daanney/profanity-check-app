@@ -2,12 +2,12 @@ package com.sforce.profanitycheck.validation;
 
 import com.sforce.profanitycheck.common.ApiResult;
 import org.springframework.beans.factory.annotation.Value;
-import org.springframework.stereotype.Service;
+import org.springframework.stereotype.Component;
 import org.springframework.web.multipart.MultipartFile;
 
 import java.util.List;
 
-@Service
+@Component
 public class FileTypeValidator implements Validator {
 
     @Value("#{T(java.util.Arrays).asList('${profanitycheck.upload.allowedTypes:}')}")

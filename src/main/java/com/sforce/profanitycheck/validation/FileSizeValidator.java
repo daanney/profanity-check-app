@@ -2,8 +2,10 @@ package com.sforce.profanitycheck.validation;
 
 import com.sforce.profanitycheck.common.ApiResult;
 import org.springframework.beans.factory.annotation.Value;
+import org.springframework.stereotype.Component;
 import org.springframework.web.multipart.MultipartFile;
 
+@Component
 public class FileSizeValidator implements Validator {
 
     @Value("${profanitycheck.upload.maxSize}")
