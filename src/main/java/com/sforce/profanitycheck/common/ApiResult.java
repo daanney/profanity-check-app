@@ -6,7 +6,7 @@ import java.io.Serializable;
  * Basic API response object used by modification requests.
  * TODO: extend with domain-specific data to also return modified objects?
  */
-public class CrudResult implements Serializable {
+public class ApiResult implements Serializable {
 
     private boolean success;
     private String message;
@@ -15,20 +15,19 @@ public class CrudResult implements Serializable {
         return success;
     }
 
-
     public String getMessage() {
         return message;
     }
 
-    public CrudResult setFailure(String message) {
+    public boolean setFailure(String message) {
         this.message = message;
         this.success = false;
-        return this;
+        return false;
     }
 
-    public CrudResult setSuccess(String message) {
+    public boolean setSuccess(String message) {
         this.message = message;
         this.success = true;
-        return this;
+        return true;
     }
 }

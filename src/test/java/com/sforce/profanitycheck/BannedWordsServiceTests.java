@@ -1,6 +1,6 @@
 package com.sforce.profanitycheck;
 
-import com.sforce.profanitycheck.common.CrudResult;
+import com.sforce.profanitycheck.common.ApiResult;
 import com.sforce.profanitycheck.wordlist.BannedWord;
 import com.sforce.profanitycheck.wordlist.BannedWordsRepository;
 import com.sforce.profanitycheck.wordlist.BannedWordsService;
@@ -44,14 +44,16 @@ public class BannedWordsServiceTests {
     @Test
     void shouldAddNewBannedWord() {
         BannedWord word = new BannedWord("valid phrase");
-        CrudResult result = service.addBannedWord(word);
+        ApiResult result = new ApiResult();
+        service.addBannedWord(word, result);
         Assertions.assertThat(result.isSuccess()).isTrue();
     }
 
     @Test
     void shouldRevokeEmptyNames() {
         BannedWord word = new BannedWord("");
-        CrudResult result = service.addBannedWord(word);
+        ApiResult result = new ApiResult();
+        service.addBannedWord(word, result);
         Assertions.assertThat(result.isSuccess()).isFalse();
     }
 
@@ -59,7 +61,8 @@ public class BannedWordsServiceTests {
     void shouldNotAddDuplicateWords() {
         BannedWord word = new BannedWord("some phrase");
         BDDMockito.given(bannedWordsRepository.findByName(word.getName())).willReturn(Optional.of(word));
-        CrudResult result = service.addBannedWord(word);
+        ApiResult result = new ApiResult();
+        service.addBannedWord(word, result);
         Assertions.assertThat(result.isSuccess()).isFalse();
     }
 
@@ -67,7 +70,8 @@ public class BannedWordsServiceTests {
     void shouldDeleteWordCorrectly() {
         BannedWord word = new BannedWord(1L, "to be", "deleted");
         BDDMockito.given(bannedWordsRepository.findById(word.getId())).willReturn(Optional.of(word));
-        CrudResult result = service.deleteWord(word.getId());
+        ApiResult result = new ApiResult();
+        service.deleteWord(word.getId(), result);
         Assertions.assertThat(result.isSuccess()).isTrue();
     }
 
@@ -75,7 +79,8 @@ public class BannedWordsServiceTests {
     void shouldHandleUnknownIdInDeletion() {
         BannedWord word = new BannedWord(1337L, "to be", "deleted");
         BDDMockito.given(bannedWordsRepository.findById(word.getId())).willReturn(Optional.empty());
-        CrudResult result = service.deleteWord(word.getId());
+        ApiResult result = new ApiResult();
+        service.deleteWord(word.getId(), result);
         Assertions.assertThat(result.isSuccess()).isFalse();
     }
 }

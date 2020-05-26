@@ -1,6 +1,6 @@
 package com.sforce.profanitycheck.wordlist;
 
-import com.sforce.profanitycheck.common.CrudResult;
+import com.sforce.profanitycheck.common.ApiResult;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 
@@ -20,8 +20,7 @@ public class BannedWordsService {
         return repository.findById(id).orElse(null);
     }
 
-    public CrudResult addBannedWord(BannedWord bannedWord) {
-        CrudResult result = new CrudResult();
+    public boolean addBannedWord(BannedWord bannedWord, ApiResult result) {
         if(bannedWord.getName().trim().isEmpty())
             return result.setFailure("The supplied word/phrase was not given");
 
@@ -34,8 +33,7 @@ public class BannedWordsService {
         return result.setSuccess("Record created");
     }
 
-    public CrudResult deleteWord(Long id) {
-        CrudResult result = new CrudResult();
+    public boolean deleteWord(Long id, ApiResult result) {
         Optional<BannedWord> optBannedWord = repository.findById(id);
         if(optBannedWord.isPresent()) {
             repository.delete(optBannedWord.get());

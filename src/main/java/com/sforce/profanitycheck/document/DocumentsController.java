@@ -1,6 +1,6 @@
 package com.sforce.profanitycheck.document;
 
-import com.sforce.profanitycheck.common.CrudResult;
+import com.sforce.profanitycheck.common.ApiResult;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
@@ -29,10 +29,10 @@ public class DocumentsController {
     }
 
     @PostMapping
-    public ResponseEntity<CrudResult> uploadDocument(@RequestParam("file") MultipartFile file) {
-        CrudResult result = documentsService.uploadFile(file);
+    public ResponseEntity<ApiResult> uploadDocument(@RequestParam("file") MultipartFile file) {
+        ApiResult result = new ApiResult();
 
-        if(result.isSuccess()) {
+        if(documentsService.uploadFile(file, result)) {
             return new ResponseEntity<>(result, HttpStatus.OK);
         }
 

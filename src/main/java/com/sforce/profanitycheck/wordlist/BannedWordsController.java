@@ -1,6 +1,6 @@
 package com.sforce.profanitycheck.wordlist;
 
-import com.sforce.profanitycheck.common.CrudResult;
+import com.sforce.profanitycheck.common.ApiResult;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
@@ -20,16 +20,20 @@ public class BannedWordsController {
     }
 
     @PostMapping
-    public ResponseEntity<CrudResult> create(@RequestBody BannedWord bannedWord) {
-        CrudResult result = service.addBannedWord(bannedWord);
-        if(result.isSuccess()) return new ResponseEntity<>(result, HttpStatus.OK);
+    public ResponseEntity<ApiResult> create(@RequestBody BannedWord bannedWord) {
+        ApiResult result = new ApiResult();
+        if(service.addBannedWord(bannedWord, result))
+            return new ResponseEntity<>(result, HttpStatus.OK);
+
         return new ResponseEntity<>(result, HttpStatus.BAD_REQUEST);
     }
 
     @DeleteMapping("{id}")
-    public ResponseEntity<CrudResult> delete(@PathVariable Long id) {
-        CrudResult result = service.deleteWord(id);
-        if(result.isSuccess()) return new ResponseEntity<>(result, HttpStatus.OK);
+    public ResponseEntity<ApiResult> delete(@PathVariable Long id) {
+        ApiResult result = new ApiResult();
+        if(service.deleteWord(id, result))
+            return new ResponseEntity<>(result, HttpStatus.OK);
+
         return new ResponseEntity<>(result, HttpStatus.NOT_FOUND);
     }
 }

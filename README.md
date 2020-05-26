@@ -13,11 +13,12 @@ The spring boot app currently serves the following features.
 
 #### Document upload and validation
 Documents can be uploaded as raw file with the name of `file`. Currently, they are stored in a global collection (without the logic to link it to a client note, those are used only in the UI to form a use case). The retrieval of documents metadata is exposed as API endpoint, however the file contents are not served after upload.
-Before supplied documents are accepted and saved, a number of validation will be performed. The first basic validation consists of: file is not empty, a valid type and not too large. As a last validation, the profanity check will be performed. This process uses the list of [banned words](#banned-words) to validate the data in the file and also its filename. The data is transformed to lower-case and non-relevant characters are filtered out before this check.
+Before supplied documents are accepted and saved, a number of validation will be performed. The first basic validation consists of: file is not empty, a valid type and not too large. As a last validation, the profanity check will be performed. This process uses the list of [banned words](#banned-words) to validate the data in the file and also its filename. The data is transformed to lower-case and non-relevant characters are filtered out before this check. If a file is considered invalid based on above verification, it will be rejected for storage and an error is returned with respective message indicating the reason.
 
 #### Banned Words
 Banned words are considered as the blacklist for the profanity check performed against uploaded files. The backend exposes public CRUD endpoints to easily maintain the list of banned words for the sake of this example project. In a real-world scenario, such endpoints shall be secured properly. 
 Banned words are always saved lower-case (as the profanity check is performed in lower-case) and they can be equipped with an optional description.
+> Please note that on restart of the spring-boot application all the data is reset and can be created newly via the user interface.
 
 ### Properties
 The following properties can be configured based on your needs.
@@ -80,6 +81,9 @@ In order to setup automated deployments with AWS CodePipeline, the buildpec.yml 
  5. Select AWS CodeBuild as build provider, select a build project (or create new)
  6. Select AWS Elastic Beanstalk as deploy provider and select the previously created Elastic Beanstalk application
 
+## Additional notes
+- **Upload Size Limit:** The maximum upload size is not only dependent on the properties files mentioned in the spring config, but also from the webserver configuration.
+- **Upload Of Larger Files:** An upload of very large files could potentially be realized via a stream/chunk based approach, where the file is sent in parts instead of all in one request. The backend then should be able to receive and recognize those parts to write the complete file.
 
 ##
 > Written with [StackEdit](https://stackedit.io/).
